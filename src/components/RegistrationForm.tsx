@@ -101,7 +101,7 @@ export default function RegistrationForm({ onSuccess }: Props) {
           type="submit"
           disabled={loading}
           className="mt-2 w-full py-4 rounded-xl font-display text-2xl uppercase tracking-wide text-white disabled:opacity-50 transition-transform active:scale-95"
-          style={{ background: "linear-gradient(135deg, #F47C20, #e06010)" }}
+          style={{ background: "linear-gradient(135deg, #FF8000, #e06010)" }}
         >
           {loading ? "Loading..." : "Enter My Prediction →"}
         </button>

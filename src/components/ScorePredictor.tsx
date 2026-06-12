@@ -94,7 +94,7 @@ export default function ScorePredictor({
         <div className="flex flex-col items-center gap-2 flex-1">
           <div
             className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-black text-white border-2 border-white/30"
-            style={{ background: "#F47C20" }}
+            style={{ background: "#FF8000" }}
           >
             🇨🇮
           </div>
@@ -104,20 +104,20 @@ export default function ScorePredictor({
         </div>
 
         <div className="flex items-center gap-4">
-          <ScoreStepper value={scoreA} onChange={setScoreA} color="#F47C20" />
+          <ScoreStepper value={scoreA} onChange={setScoreA} color="#FF8000" />
           <span
             className="font-display text-white/50"
             style={{ fontSize: "clamp(32px,10vw,48px)", textShadow: "2px 2px 0 rgba(0,0,0,0.5)" }}
           >
             –
           </span>
-          <ScoreStepper value={scoreB} onChange={setScoreB} color="#1A4FA0" />
+          <ScoreStepper value={scoreB} onChange={setScoreB} color="#034EA2" />
         </div>
 
         <div className="flex flex-col items-center gap-2 flex-1">
           <div
             className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-black text-white border-2 border-white/30"
-            style={{ background: "#1A4FA0" }}
+            style={{ background: "#034EA2" }}
           >
             🇪🇨
           </div>
@@ -152,7 +152,7 @@ export default function ScorePredictor({
         onClick={handleSubmit}
         disabled={loading}
         className="w-full py-4 rounded-xl font-display text-2xl uppercase tracking-wide text-white disabled:opacity-50 transition-transform active:scale-95"
-        style={{ background: "linear-gradient(135deg, #F47C20, #e06010)" }}
+        style={{ background: "linear-gradient(135deg, #FF8000, #e06010)" }}
       >
         {loading ? "Submitting..." : "Lock In My Prediction 🔒"}
       </button>
