@@ -1,71 +1,57 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/firebase";
-import {
-  collection,
-  doc,
-  updateDoc,
-  query,
-  where,
-  getDocs,
-  addDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { getDb } from "@/lib/firebase";
+import { FieldValue } from "firebase-admin/firestore";
 import { generateVoucherCode } from "@/lib/vouchers";
 
 export async function POST(req: NextRequest) {
-  const { matchId, finalScoreA, finalScoreB, adminSecret } = await req.json();
+  try {
+    const { matchId, finalScoreA, finalScoreB, adminSecret } = await req.json();
 
-  if (adminSecret !== process.env.ADMIN_SECRET) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+    if (adminSecret !== process.env.ADMIN_SECRET) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-  if (!matchId || finalScoreA == null || finalScoreB == null) {
-    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
-  }
+    if (!matchId || finalScoreA == null || finalScoreB == null) {
+      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+    }
 
-  // Settle the match
-  await updateDoc(doc(db, "matches", matchId), {
-    finalScoreA: Number(finalScoreA),
-    finalScoreB: Number(finalScoreB),
-    isActive: false,
-    settledAt: serverTimestamp(),
-  });
-
-  // Find winning predictions
-  const winnersSnap = await getDocs(
-    query(
-      collection(db, "predictions"),
-      where("matchId", "==", matchId),
-      where("scoreA", "==", Number(finalScoreA)),
-      where("scoreB", "==", Number(finalScoreB))
-    )
-  );
-
-  // Mark them correct
-  const codes: string[] = [];
-  for (const predDoc of winnersSnap.docs) {
-    await updateDoc(predDoc.ref, { isCorrect: true });
-
-    const pred = predDoc.data();
-
-    // Fetch user details
-    const userSnap = await getDocs(
-      query(collection(db, "users"), where("__name__", "==", pred.userId))
-    );
-    const user = userSnap.empty ? { name: "Unknown", email: pred.email } : userSnap.docs[0].data();
-
-    const code = generateVoucherCode();
-    await addDoc(collection(db, "vouchers"), {
-      userId: pred.userId,
-      predictionId: predDoc.id,
-      code,
-      sentAt: serverTimestamp(),
-      claimedAt: null,
+    await getDb().collection("matches").doc(matchId).update({
+      finalScoreA: Number(finalScoreA),
+      finalScoreB: Number(finalScoreB),
+      isActive: false,
+      settledAt: FieldValue.serverTimestamp(),
     });
 
-    codes.push(code);
-    console.log(`[VOUCHER] Winner: ${user.name} <${user.email}> | Code: ${code}`);
-  }
+    const winnersSnap = await getDb().collection("predictions")
+      .where("matchId", "==", matchId)
+      .where("scoreA", "==", Number(finalScoreA))
+      .where("scoreB", "==", Number(finalScoreB))
+      .get();
 
-  return NextResponse.json({ winnersCount: winnersSnap.size, codes });
+    const codes: string[] = [];
+    for (const predDoc of winnersSnap.docs) {
+      await predDoc.ref.update({ isCorrect: true });
+
+      const pred = predDoc.data();
+      const userDoc = await getDb().collection("users").doc(pred.userId).get();
+      const user = userDoc.exists ? userDoc.data() : { name: "Unknown", email: pred.email };
+
+      const code = generateVoucherCode();
+      await getDb().collection("vouchers").add({
+        userId: pred.userId,
+        predictionId: predDoc.id,
+        code,
+        sentAt: FieldValue.serverTimestamp(),
+        claimedAt: null,
+      });
+
+      codes.push(code);
+      console.log(`[VOUCHER] Winner: ${user?.name} <${user?.email}> | Code: ${code}`);
+    }
+
+    return NextResponse.json({ winnersCount: winnersSnap.size, codes });
+  } catch (err: any) {
+    console.error("[settle]", err);
+    return NextResponse.json({ error: err.message ?? "Server error" }, { status: 500 });
+  }
 }
