@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/lib/firebase";
+import {
+  collection,
+  doc,
+  getDoc,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 export async function POST(req: NextRequest) {
   const { userId, matchId, scoreA, scoreB } = await req.json();
@@ -12,14 +19,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Scores must be between 0 and 20" }, { status: 400 });
   }
 
-  const match = await prisma.match.findUnique({ where: { id: matchId } });
-  if (!match || !match.isActive) {
+  const matchDoc = await getDoc(doc(db, "matches", matchId));
+  if (!matchDoc.exists() || !matchDoc.data()?.isActive) {
     return NextResponse.json({ error: "Match is not active" }, { status: 400 });
   }
 
-  const prediction = await prisma.prediction.create({
-    data: { userId, matchId, scoreA: Number(scoreA), scoreB: Number(scoreB) },
+  // Retrieve user email for denormalized storage
+  const userDoc = await getDoc(doc(db, "users", userId));
+  const email = userDoc.exists() ? userDoc.data()?.email : "";
+
+  const predRef = await addDoc(collection(db, "predictions"), {
+    userId,
+    matchId,
+    email,
+    scoreA: Number(scoreA),
+    scoreB: Number(scoreB),
+    isCorrect: false,
+    createdAt: serverTimestamp(),
   });
 
-  return NextResponse.json({ predictionId: prediction.id, message: "Prediction saved!" });
+  return NextResponse.json({ predictionId: predRef.id, message: "Prediction saved!" });
 }
