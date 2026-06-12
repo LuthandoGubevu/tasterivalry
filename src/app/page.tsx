@@ -22,7 +22,7 @@ export default function Home() {
 
   return (
     <div className="relative min-h-dvh flex flex-col overflow-hidden">
-      {/* Diagonal split background — full height, no overlay */}
+      {/* Diagonal split background */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0" style={{ background: "#FF8000" }} />
         <div
@@ -34,14 +34,14 @@ export default function Home() {
         />
       </div>
 
-      {/* VS watermark */}
+      {/* VS watermark — anchored to hero top half only */}
       <div
-        className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none select-none"
-        style={{ opacity: 0.15 }}
+        className="absolute z-0 left-0 right-0 pointer-events-none select-none flex items-center justify-center"
+        style={{ top: "8%", height: "42%", opacity: 0.15 }}
       >
         <span
           className="font-display"
-          style={{ fontSize: "clamp(160px, 45vw, 280px)", color: "white", letterSpacing: "-0.05em" }}
+          style={{ fontSize: "clamp(120px, 38vw, 220px)", color: "white", letterSpacing: "-0.05em" }}
         >
           VS
         </span>
@@ -49,12 +49,14 @@ export default function Home() {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col min-h-dvh">
+
+        {/* ── HERO (register + predict steps) ── */}
         {step !== "success" && (
-          <div className="pt-8 pb-2 px-5 text-center">
+          <div className="pt-6 pb-3 px-5 text-center">
             <h1
               className="font-display text-white leading-none"
               style={{
-                fontSize: "clamp(56px, 18vw, 92px)",
+                fontSize: "clamp(50px, 16vw, 84px)",
                 textShadow: "4px 4px 0 rgba(0,0,0,0.4)",
                 letterSpacing: "-0.01em",
               }}
@@ -64,9 +66,9 @@ export default function Home() {
               ET GAGNEZ
             </h1>
             <p
-              className="font-display text-white uppercase mt-2"
+              className="font-display text-white uppercase mt-1"
               style={{
-                fontSize: "clamp(11px, 3.2vw, 15px)",
+                fontSize: "clamp(10px, 2.8vw, 13px)",
                 fontWeight: 700,
                 textShadow: "1px 1px 0 rgba(0,0,0,0.4)",
                 letterSpacing: "0.04em",
@@ -78,64 +80,57 @@ export default function Home() {
             </p>
 
             {/* Team images */}
-            <div className="flex justify-center items-center gap-8 mt-5 mb-1">
+            <div className="flex justify-center items-center gap-6 mt-4">
               <div
-                className="rounded-full overflow-hidden shadow-2xl"
+                className="rounded-full overflow-hidden flex-shrink-0"
                 style={{
-                  width: "clamp(80px, 24vw, 108px)",
-                  height: "clamp(80px, 24vw, 108px)",
-                  boxShadow: "0 8px 28px rgba(0,0,0,0.4)",
+                  width: "clamp(72px, 20vw, 96px)",
+                  height: "clamp(72px, 20vw, 96px)",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.45)",
                 }}
               >
-                <Image
-                  src="/CDI.png"
-                  alt="Ivory Coast"
-                  width={108}
-                  height={108}
-                  className="w-full h-full object-cover"
-                  priority
-                />
+                <Image src="/CDI.png" alt="Ivory Coast" width={96} height={96} className="w-full h-full object-cover" priority />
               </div>
               <div
-                className="rounded-full overflow-hidden shadow-2xl"
+                className="rounded-full overflow-hidden flex-shrink-0"
                 style={{
-                  width: "clamp(80px, 24vw, 108px)",
-                  height: "clamp(80px, 24vw, 108px)",
-                  boxShadow: "0 8px 28px rgba(0,0,0,0.4)",
+                  width: "clamp(72px, 20vw, 96px)",
+                  height: "clamp(72px, 20vw, 96px)",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.45)",
                 }}
               >
-                <Image
-                  src="/Equador.png"
-                  alt="Ecuador"
-                  width={108}
-                  height={108}
-                  className="w-full h-full object-cover"
-                  priority
-                />
+                <Image src="/Equador.png" alt="Ecuador" width={96} height={96} className="w-full h-full object-cover" priority />
               </div>
+            </div>
+
+            {/* Step dots */}
+            <div className="flex justify-center gap-2 mt-3">
+              {(["register", "predict"] as const).map((s) => (
+                <div
+                  key={s}
+                  className="rounded-full transition-all duration-300"
+                  style={{
+                    width: step === s ? 22 : 8,
+                    height: 8,
+                    background: step === s ? "white" : "rgba(255,255,255,0.4)",
+                  }}
+                />
+              ))}
             </div>
           </div>
         )}
 
-        {/* Step indicator */}
-        {step !== "success" && (
-          <div className="flex justify-center gap-2 pt-3 pb-1">
-            {(["register", "predict"] as const).map((s) => (
-              <div
-                key={s}
-                className="rounded-full transition-all duration-300"
-                style={{
-                  width: step === s ? 24 : 8,
-                  height: 8,
-                  background: step === s ? "white" : "rgba(255,255,255,0.4)",
-                }}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Step content — sits directly on the split background */}
-        <div className="flex-1 flex flex-col justify-end">
+        {/* ── FORM CARD — dark panel, sits flush below hero ── */}
+        <div
+          className="flex-1 flex flex-col"
+          style={{
+            background: "rgba(0,0,0,0.72)",
+            backdropFilter: "blur(6px)",
+            borderTopLeftRadius: 28,
+            borderTopRightRadius: 28,
+            marginTop: step === "success" ? 0 : 8,
+          }}
+        >
           {step === "register" && (
             <RegistrationForm
               onSuccess={(data) => {
@@ -159,14 +154,12 @@ export default function Home() {
           )}
 
           {step === "success" && matchData && (
-            <div className="flex-1 flex flex-col justify-center">
-              <SuccessScreen
-                scoreA={finalScores.a}
-                scoreB={finalScores.b}
-                teamA={matchData.teamA}
-                teamB={matchData.teamB}
-              />
-            </div>
+            <SuccessScreen
+              scoreA={finalScores.a}
+              scoreB={finalScores.b}
+              teamA={matchData.teamA}
+              teamB={matchData.teamB}
+            />
           )}
         </div>
       </div>
