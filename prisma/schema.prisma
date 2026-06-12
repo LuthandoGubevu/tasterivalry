@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Match {
+  id          String   @id @default(cuid())
+  teamA       String
+  teamB       String
+  scheduledAt DateTime
+  isActive    Boolean  @default(true)
+  finalScoreA Int?
+  finalScoreB Int?
+  settledAt   DateTime?
+  createdAt   DateTime @default(now())
+
+  predictions Prediction[]
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  phone     String
+  createdAt DateTime @default(now())
+
+  predictions Prediction[]
+  vouchers    Voucher[]
+}
+
+model Prediction {
+  id        String   @id @default(cuid())
+  userId    String
+  matchId   String
+  scoreA    Int
+  scoreB    Int
+  isCorrect Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id])
+  match Match @relation(fields: [matchId], references: [id])
+
+  @@unique([userId, matchId])
+}
+
+model Voucher {
+  id        String    @id @default(cuid())
+  userId    String
+  code      String    @unique
+  sentAt    DateTime?
+  claimedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
