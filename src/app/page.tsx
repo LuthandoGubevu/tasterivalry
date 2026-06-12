@@ -50,7 +50,7 @@ export default function Home() {
         style={{ opacity: 0.12 }}
       >
         <span
-          className="font-black italic"
+          className="font-display"
           style={{
             fontSize: "clamp(140px, 40vw, 260px)",
             color: "white",
@@ -67,11 +67,11 @@ export default function Home() {
         {step !== "success" && (
           <div className="pt-10 pb-4 px-6 text-center">
             <h1
-              className="text-white font-black uppercase italic leading-none"
+              className="font-display text-white uppercase leading-none"
               style={{
-                fontSize: "clamp(42px, 14vw, 72px)",
-                textShadow: "3px 3px 0 rgba(0,0,0,0.5)",
-                letterSpacing: "-0.02em",
+                fontSize: "clamp(52px, 17vw, 88px)",
+                textShadow: "4px 4px 0 rgba(0,0,0,0.5)",
+                letterSpacing: "-0.01em",
               }}
             >
               PRÉDISEZ
@@ -79,11 +79,12 @@ export default function Home() {
               ET GAGNEZ
             </h1>
             <p
-              className="text-white font-bold uppercase mt-3"
+              className="font-display text-white uppercase mt-3"
               style={{
-                fontSize: "clamp(10px, 3vw, 14px)",
+                fontSize: "clamp(11px, 3.5vw, 16px)",
+                fontWeight: 700,
                 textShadow: "1px 1px 0 rgba(0,0,0,0.5)",
-                letterSpacing: "0.05em",
+                letterSpacing: "0.04em",
               }}
             >
               QUELLE ÉQUIPE REMPORTERA LA VICTOIRE?

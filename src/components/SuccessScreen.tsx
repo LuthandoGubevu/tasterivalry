@@ -13,8 +13,8 @@ export default function SuccessScreen({ scoreA, scoreB, teamA, teamB }: Props) {
       <div className="text-7xl mb-4">🎉</div>
 
       <h2
-        className="text-white text-3xl font-black uppercase italic mb-2"
-        style={{ textShadow: "2px 2px 0 rgba(0,0,0,0.5)" }}
+        className="font-display text-white mb-2"
+        style={{ fontSize: "clamp(36px,11vw,52px)", textShadow: "2px 2px 0 rgba(0,0,0,0.5)" }}
       >
         You&apos;re In!
       </h2>
@@ -30,8 +30,8 @@ export default function SuccessScreen({ scoreA, scoreB, teamA, teamB }: Props) {
           Your score prediction
         </p>
         <p
-          className="text-white text-4xl font-black"
-          style={{ textShadow: "3px 3px 0 rgba(0,0,0,0.4)" }}
+          className="font-display text-white"
+          style={{ fontSize: "clamp(40px,12vw,56px)", textShadow: "3px 3px 0 rgba(0,0,0,0.4)" }}
         >
           {scoreA} — {scoreB}
         </p>

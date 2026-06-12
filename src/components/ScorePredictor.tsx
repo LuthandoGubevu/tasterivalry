@@ -30,8 +30,8 @@ function ScoreStepper({
         +
       </button>
       <span
-        className="text-white font-black text-6xl leading-none"
-        style={{ textShadow: "3px 3px 0 rgba(0,0,0,0.5)" }}
+        className="font-display text-white leading-none"
+        style={{ fontSize: "clamp(52px,16vw,72px)", textShadow: "3px 3px 0 rgba(0,0,0,0.5)" }}
       >
         {value}
       </span>
@@ -81,10 +81,10 @@ export default function ScorePredictor({
   return (
     <div className="flex flex-col w-full max-w-sm mx-auto px-6 py-8">
       <h2
-        className="text-white text-2xl font-black uppercase italic text-center mb-1"
-        style={{ textShadow: "2px 2px 0 rgba(0,0,0,0.4)" }}
+        className="font-display text-white text-center mb-1"
+        style={{ fontSize: "clamp(28px, 9vw, 40px)", textShadow: "2px 2px 0 rgba(0,0,0,0.4)" }}
       >
-        Your Prediction
+        YOUR PREDICTION
       </h2>
       <p className="text-white/70 text-sm text-center mb-8 uppercase tracking-wide">
         What will the final score be?
@@ -106,8 +106,8 @@ export default function ScorePredictor({
         <div className="flex items-center gap-4">
           <ScoreStepper value={scoreA} onChange={setScoreA} color="#F47C20" />
           <span
-            className="text-white/50 text-4xl font-black"
-            style={{ textShadow: "2px 2px 0 rgba(0,0,0,0.5)" }}
+            className="font-display text-white/50"
+            style={{ fontSize: "clamp(32px,10vw,48px)", textShadow: "2px 2px 0 rgba(0,0,0,0.5)" }}
           >
             –
           </span>
@@ -135,8 +135,8 @@ export default function ScorePredictor({
           Your prediction
         </p>
         <p
-          className="text-white text-3xl font-black"
-          style={{ textShadow: "2px 2px 0 rgba(0,0,0,0.4)" }}
+          className="font-display text-white"
+          style={{ fontSize: "clamp(26px,8vw,36px)", textShadow: "2px 2px 0 rgba(0,0,0,0.4)" }}
         >
           {teamA.split(" ")[0]} {scoreA} — {scoreB} {teamB.split(" ")[0]}
         </p>
@@ -151,7 +151,7 @@ export default function ScorePredictor({
       <button
         onClick={handleSubmit}
         disabled={loading}
-        className="w-full py-4 rounded-xl font-black text-lg uppercase italic tracking-wide text-white disabled:opacity-50 transition-transform active:scale-95"
+        className="w-full py-4 rounded-xl font-display text-2xl uppercase tracking-wide text-white disabled:opacity-50 transition-transform active:scale-95"
         style={{ background: "linear-gradient(135deg, #F47C20, #e06010)" }}
       >
         {loading ? "Submitting..." : "Lock In My Prediction 🔒"}

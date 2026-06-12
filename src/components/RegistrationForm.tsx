@@ -39,10 +39,10 @@ export default function RegistrationForm({ onSuccess }: Props) {
   return (
     <div className="flex flex-col w-full max-w-sm mx-auto px-6 py-8">
       <h2
-        className="text-white text-2xl font-black uppercase italic text-center mb-1"
-        style={{ textShadow: "2px 2px 0 rgba(0,0,0,0.4)" }}
+        className="font-display text-white text-center mb-1"
+        style={{ fontSize: "clamp(28px, 9vw, 40px)", textShadow: "2px 2px 0 rgba(0,0,0,0.4)" }}
       >
-        Enter Your Details
+        ENTER YOUR DETAILS
       </h2>
       <p className="text-white/70 text-sm text-center mb-6 uppercase tracking-wide">
         To participate in the prediction
@@ -100,7 +100,7 @@ export default function RegistrationForm({ onSuccess }: Props) {
         <button
           type="submit"
           disabled={loading}
-          className="mt-2 w-full py-4 rounded-xl font-black text-lg uppercase italic tracking-wide text-white disabled:opacity-50 transition-transform active:scale-95"
+          className="mt-2 w-full py-4 rounded-xl font-display text-2xl uppercase tracking-wide text-white disabled:opacity-50 transition-transform active:scale-95"
           style={{ background: "linear-gradient(135deg, #F47C20, #e06010)" }}
         >
           {loading ? "Loading..." : "Enter My Prediction →"}
