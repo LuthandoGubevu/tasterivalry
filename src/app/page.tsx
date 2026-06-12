@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import RegistrationForm from "@/components/RegistrationForm";
 import ScorePredictor from "@/components/ScorePredictor";
@@ -76,29 +77,41 @@ export default function Home() {
               VOS PRONOSTIC ICI ?
             </p>
 
-            {/* Team balls */}
+            {/* Team images */}
             <div className="flex justify-center items-center gap-8 mt-5 mb-1">
               <div
-                className="rounded-full flex items-center justify-center text-4xl shadow-2xl"
+                className="rounded-full overflow-hidden shadow-2xl"
                 style={{
                   width: "clamp(80px, 24vw, 108px)",
                   height: "clamp(80px, 24vw, 108px)",
-                  background: "radial-gradient(circle at 32% 32%, #ffcc99, #FF8000 55%, #b35a00)",
-                  boxShadow: "inset -5px -5px 10px rgba(0,0,0,0.3), 0 8px 28px rgba(0,0,0,0.35)",
+                  boxShadow: "0 8px 28px rgba(0,0,0,0.4)",
                 }}
               >
-                🇨🇮
+                <Image
+                  src="/CDI.png"
+                  alt="Ivory Coast"
+                  width={108}
+                  height={108}
+                  className="w-full h-full object-cover"
+                  priority
+                />
               </div>
               <div
-                className="rounded-full flex items-center justify-center text-4xl shadow-2xl"
+                className="rounded-full overflow-hidden shadow-2xl"
                 style={{
                   width: "clamp(80px, 24vw, 108px)",
                   height: "clamp(80px, 24vw, 108px)",
-                  background: "radial-gradient(circle at 32% 32%, #99bbee, #034EA2 55%, #012d6b)",
-                  boxShadow: "inset -5px -5px 10px rgba(0,0,0,0.3), 0 8px 28px rgba(0,0,0,0.35)",
+                  boxShadow: "0 8px 28px rgba(0,0,0,0.4)",
                 }}
               >
-                🇪🇨
+                <Image
+                  src="/Equador.png"
+                  alt="Ecuador"
+                  width={108}
+                  height={108}
+                  className="w-full h-full object-cover"
+                  priority
+                />
               </div>
             </div>
           </div>
